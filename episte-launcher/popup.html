@@ -1,14 +1,22 @@
 <!doctype html>
 <html>
   <head>
-    <title>Episte-GO</title>
+    <title>Episte Launcher</title>
     <script src="popup.js"></script>
   </head>
   <body>
-    <h1>Episte-ID</h1>
+    <h1 style="color: #3a8fbd;text-align: center;">Episte Launcher</h1>
     <form id="episte-form">
 	    <input type="text" id="episte_id"/>
-	    <button id="checkPage" type="submit">GO</button>
+      <div style="width: 100%; text-align: center;">
+        <button id="checkPage" type="submit" style="width: 40px; margin: 5px 0;">GO</button>
+      </div>
     </form>
+
+    <ul style="-webkit-padding-start: 14px;">
+      <li><strong>episte-id</strong> for document's page.</li>
+      <li><strong>d</strong> for /documents </li>
+      <li><strong>l</strong> for current document's linker </li>
+    </ul>
   </body>
 </html>
