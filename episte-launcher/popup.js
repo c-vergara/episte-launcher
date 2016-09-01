@@ -1,38 +1,123 @@
 document.addEventListener('DOMContentLoaded', function() {
-  document.getElementById('episte_id').focus();
-  var checkPageButton = document.getElementById('checkPage');
+  document.getElementById('command').focus();
+
+
+  var DOMAIN = '';
+  var EPISTE_DOMAIN = 'www.epistemonikos.org';
+  load_custom_domain()
 
   function OpenInNewTab(url) {
     var win = window.open(url, '_blank');
     win.focus();
   }
 
-  var open_document = function() {
-    var eid = '';
-    var eid = document.getElementById('episte_id').value;
-    if (/\w{40}/.test(eid)) {
-      OpenInNewTab('http://www.epistemonikos.org/en/documents/'+eid)
-    } else if (eid == 'd') {
-      OpenInNewTab('http://www.epistemonikos.org/en/documents')
+  function toggleMessage(mid, show) {
+    var show = show || false;
+    if (show) {
+      document.getElementById(mid).style.display = 'block';
+    } else {
+      document.getElementById(mid).style.display = 'none';
+    }
+  }
 
-    } else if (eid == 'l') {
+  var open_document = function (event) {
+    toggleMessage('error-msg');
+    event.preventDefault();
+
+    var command = (document.getElementById('command').value || '').trim();
+    var epid_regex = /^\w{40}$/;
+    var epid_comm_regex = /^([lms])-(.*)$/;
+
+    if (epid_regex.test(command)) {
+      OpenInNewTab('http://'+DOMAIN+'/en/documents/'+command)
+    } else if (command == 'd') {
+      OpenInNewTab('http://'+DOMAIN+'/en/documents')
+    } else if (command == 'u') {
+      OpenInNewTab('http://'+DOMAIN+'/en/documents/upload_document')
+    } else if (command == 'm') {
+      OpenInNewTab('http://'+DOMAIN+'/en/matrixes')
+    } else if (command == 'l') {
       chrome.tabs.getSelected(null, function(tab) {
         var _match = tab.url.match(/documents\/(\w{40})/);
         var current_eid = _match.length == 2 ? _match[1] : null;
         if ( current_eid ) {
-          OpenInNewTab('http://www.epistemonikos.org/en/documents/'+current_eid+'/linker')
+          OpenInNewTab('http://'+DOMAIN+'/en/documents/'+current_eid+'/linker')
+        }
+      });
+    } else if (epid_comm_regex.test(command)) {
+      try {
+        var match = epid_comm_regex.exec(command);
+        var comm = match[1];
+        var eid = match[2];
+        if (comm == 'l') {
+          if (! epid_regex.test(eid)) { throw 'Invalid Episte ID'}
+          OpenInNewTab('http://'+DOMAIN+'/en/documents/'+eid+'/linker')
+        } else if (comm == 'm') {
+          if (! epid_regex.test(eid)) { throw 'Invalid Episte ID'}
+          OpenInNewTab('http://'+DOMAIN+'/en/documents/'+eid+'/matrix')
+        } else if (comm == 's') {
+          OpenInNewTab('http://'+DOMAIN+'/en/search?q='+eid)
+        }
+      } catch (e) {
+        toggleMessage('error-msg', true);
+      }
+    } else {
+      toggleMessage('error-msg', true);
+    }
+  };
+
+  function load_custom_domain() {
+    chrome.storage.local.get(['epla_use_custom_domain', 'epla_local_domain'], function(val) {
+
+        document.getElementById('domain').value = (val['epla_local_domain']|| '');
+        if (val['epla_use_custom_domain']) {
+            document.getElementById('use_custom_domain').checked = true;
+            DOMAIN = (val['epla_local_domain']|| EPISTE_DOMAIN);
+        }
+        else {
+          DOMAIN = EPISTE_DOMAIN;
         }
 
+    });
+  };
+
+  var set_domain = function (event) {
+    toggleMessage('local-domain-msg');
+    var dom = document.getElementById('domain').value.trim();
+    if (dom.length > 0) {
+      chrome.storage.local.set({'epla_local_domain': dom}, function (result) {
+        load_custom_domain();
+        toggleMessage('local-domain-msg', true);
+      })
+    }
+  };
+
+  var clear_domain = function (event) {
+    toggleMessage('local-domain-msg');
+    chrome.storage.local.remove('epla_local_domain', function (result) {
+      document.getElementById('domain').value = '';
+      load_custom_domain()
+      toggleMessage('local-domain-msg', true);
+    })
+  };
+
+  var use_custom_domain = function (event) {
+    toggleMessage('local-domain-msg');
+    var do_use = document.getElementById('use_custom_domain').checked;
+    if (do_use) {
+      chrome.storage.local.set({'epla_use_custom_domain': do_use}, function (result) {
+        load_custom_domain();
       });
-    };
-  }
+    } else {
+      chrome.storage.local.remove('epla_use_custom_domain', function (result) {
+        load_custom_domain();
+      });
+    }
+  };
 
-  checkPageButton.addEventListener('click', open_document, false);
-
-  $('#episte-form').submit(function(e){
-    e.preventDefault();
-    open_document();
-    return false; // just to be sure.
-  });
+  document.getElementById('episte-form').addEventListener('submit', open_document, false);
+  document.getElementById('set_domain').addEventListener('click', set_domain, false);
+  document.getElementById('clear_domain').addEventListener('click', clear_domain, false);
+  document.getElementById('use_custom_domain').addEventListener('click', use_custom_domain, false);
 
 }, false);

@@ -3,20 +3,106 @@
   <head>
     <title>Episte Launcher</title>
     <script src="popup.js"></script>
+    <style type="text/css">
+      #epla-form {
+        text-align: center;
+      }
+      #command {
+        width: 180px;
+        margin: 0 auto;
+        border-radius: 4px;
+        box-shadow: none;
+        height: 20px;
+        font-size: 12px;
+      }
+      .help {
+        margin-top: 20px;
+        list-style: none;
+        font-size: 10px;
+        color: #666;
+      }
+      .help th {
+        color: #333;
+        text-transform: uppercase;
+      }
+      .title {
+        color: #3a8fbd;
+        text-align: center;
+      }
+      .msg {
+        margin-top: 10px;
+        font-weight: bold;
+        display: none;
+      }
+      .error {
+        color: red;
+      }
+      .success {
+        color: green;
+      }
+    </style>
   </head>
   <body>
-    <h1 style="color: #3a8fbd;text-align: center;">Episte Launcher</h1>
-    <form id="episte-form">
-	    <input type="text" id="episte_id"/>
-      <div style="width: 100%; text-align: center;">
-        <button id="checkPage" type="submit" style="width: 40px; margin: 5px 0;">GO</button>
-      </div>
+    <h1 class="title">Episte Launcher</h1>
+    <form id="epla-form">
+      <input type="text" id="command" placeholder="press Enter to go"/>
     </form>
 
-    <ul style="-webkit-padding-start: 14px;">
-      <li><strong>episte-id</strong> for document's page.</li>
-      <li><strong>d</strong> for /documents </li>
-      <li><strong>l</strong> for current document's linker </li>
-    </ul>
+    <table class="help">
+      <thead>
+        <tr>
+          <th>Command</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>EPID</strong></td>
+          <td>document's page</td>
+        </tr>
+        <tr>
+          <td><strong>d</strong></td>
+          <td>/documents</td>
+        </tr>
+        <tr>
+          <td><strong>u</strong></td>
+          <td>/documents/upload_document</td>
+        </tr>
+        <tr>
+          <td><strong>m</strong></td>
+          <td>/matrixes</td>
+        </tr>
+        <tr>
+          <td><strong>l</strong></td>
+          <td>current document's linker</td>
+        </tr>
+        <tr>
+          <td><strong>l-EPID</strong></td>
+          <td>EPID document's linker</td>
+        </tr>
+        <tr>
+          <td><strong>m-EPID</strong></td>
+          <td>EPID document's matrix</td>
+        </tr>
+        <tr>
+          <td><strong>s-QUERY</strong></td>
+          <td>searching QUERY</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <hr>
+    <div>
+      <input type="checkbox" id="use_custom_domain">
+      <label for="use_custom_domain">Use custom domain</label>
+      <input id="domain" type="text" style="margin-bottom: 5px" placeholder="custom domain unset"/>
+      <input id="set_domain" type="button" value="SET"/>
+      <input id="clear_domain" type="button" value="CLEAR"/>
+    </div>
+
+    <div>
+      <p id="error-msg" class="error msg">Invalid command</p>
+      <p id="local-domain-msg" class="success msg">Local domain set!</p>
+    </div>
   </body>
 </html>
