@@ -61,18 +61,6 @@
           <td>document's page</td>
         </tr>
         <tr>
-          <td><strong>d</strong></td>
-          <td>/documents</td>
-        </tr>
-        <tr>
-          <td><strong>u</strong></td>
-          <td>/documents/upload_document</td>
-        </tr>
-        <tr>
-          <td><strong>m</strong></td>
-          <td>/matrixes</td>
-        </tr>
-        <tr>
           <td><strong>l</strong></td>
           <td>current document's linker</td>
         </tr>
@@ -88,20 +76,41 @@
           <td><strong>s-QUERY</strong></td>
           <td>searching QUERY</td>
         </tr>
+        <tr>
+          <td><strong>d</strong></td>
+          <td>/documents</td>
+        </tr>
+        <tr>
+          <td><strong>u</strong></td>
+          <td>/documents/upload_document</td>
+        </tr>
+        <tr>
+          <td><strong>m</strong></td>
+          <td>/matrixes</td>
+        </tr>
+        <tr>
+          <td><strong>tl</strong></td>
+          <td>open in local environment (needs local domain set)</td>
+        </tr>
+        <tr>
+          <td><strong>tp</strong></td>
+          <td>open in production environment (needs local domain set)</td>
+        </tr>
       </tbody>
     </table>
 
     <hr>
     <div>
-      <input type="checkbox" id="use_custom_domain">
-      <label for="use_custom_domain">Use custom domain</label>
-      <input id="domain" type="text" style="margin-bottom: 5px" placeholder="custom domain unset"/>
+      <input type="checkbox" id="use_local_domain">
+      <label for="use_local_domain">Use local domain</label>
+      <input id="domain" type="text" style="margin-bottom: 5px" placeholder="local domain unset"/>
       <input id="set_domain" type="button" value="SET"/>
       <input id="clear_domain" type="button" value="CLEAR"/>
     </div>
 
     <div>
       <p id="error-msg" class="error msg">Invalid command</p>
+      <p id="local-unset-msg" class="error msg">Local domain unset</p>
       <p id="local-domain-msg" class="success msg">Local domain set!</p>
     </div>
   </body>
