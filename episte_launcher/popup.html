@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div id="app" class="app-container">
+    <header class="app-header">
+      <div class="brand-row">
+        <img class="app-logo" src="dolmen.webp" alt="Episte Launcher logo">
+        <h1 class="app-title">Episte Launcher</h1>
+      </div>
+      <span class="app-subtitle" id="mode-subtitle">Select a mode</span>
+    </header>
+
+    <main class="app-main">
+      <!-- Menú View -->
+      <div id="view-menu" class="view active">
+        <section class="menu-section">
+          <!-- Generado dinamicamente desde JS -->
+          <ul id="mode-list" class="mode-list"></ul>
+          <div class="hint">Press a key or click an option</div>
+        </section>
+
+        <section class="menu-section quick-links-section">
+          <div class="section-heading">Quick links</div>
+          <div id="quick-links-list" class="quick-links-list"></div>
+        </section>
+      </div>
+
+      <!-- Input View -->
+      <div id="view-input" class="view hidden">
+        <div class="input-wrapper">
+          <input type="text" id="id-input" placeholder="Pega el ID aquí (Ctrl+V)" autocomplete="off" spellcheck="false">
+        </div>
+        <div class="actions">
+          <button id="btn-cancel" class="btn secondary">Cancelar (Esc)</button>
+          <button id="btn-submit" class="btn primary">Ir (Enter)</button>
+        </div>
+      </div>
+    </main>
+  </div>
+  <!-- Declarar el import de módulo ES -->
+  <script type="module" src="popup.js"></script>
+</body>
+</html>
